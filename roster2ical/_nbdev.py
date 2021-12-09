@@ -2,9 +2,11 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {}
+index = {"ShiftProperties": "00_roster.ipynb",
+         "Shift": "00_roster.ipynb",
+         "Roster": "00_roster.ipynb"}
 
-modules = []
+modules = ["roster.py"]
 
 doc_url = "https://SimonCW.github.io/roster2ical/"
 

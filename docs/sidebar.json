@@ -1,6 +1,7 @@
 {
   "roster2ical": {
     "Overview": "/",
-    "Load Roster Table": "load_table.html"
+    "Roster": "roster.html",
+    "Data Loading": "main.html"
   }
 }

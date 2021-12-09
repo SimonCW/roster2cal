@@ -10,8 +10,11 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
-      title: Load Roster Table
-      url: load_table.html
+      title: Roster
+      url: roster.html
+    - output: web,pdf
+      title: Data Loading
+      url: main.html
     output: web
     title: roster2ical
   output: web
