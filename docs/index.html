@@ -6,8 +6,8 @@ title: Roster2cal
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "This is mostly a personal project to save myself and my wife the time of manually adding her shifts from an Excel/PDF Roster to our shared Google Calendar. Also, I needed a small project to try out nbdev and pydantic."
-description: "This is mostly a personal project to save myself and my wife the time of manually adding her shifts from an Excel/PDF Roster to our shared Google Calendar. Also, I needed a small project to try out nbdev and pydantic."
+summary: "Convert a roster defined in an excel to an ics file. Note: This is a personal project to save myself and my wife the time of manually adding her work shifts from an Excel/PDF roster to our shared Google Calendar. "
+description: "Convert a roster defined in an excel to an ics file. Note: This is a personal project to save myself and my wife the time of manually adding her work shifts from an Excel/PDF roster to our shared Google Calendar. "
 nb_path: "index.ipynb"
 ---
 <!--
@@ -31,7 +31,9 @@ nb_path: "index.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This file will become your README and also the index of your documentation.</p>
+<p>The input is a roster defined in an excel file that looks similar to the screenshot below. The output is an ics file that can be imported to most calendars. 
+<img src="/roster2ical/docs/images/20211211_screenshot_example_roster.jpg" alt="">(see <a href="data/202201_example_roster.xlsx">full example here</a>)</p>
+<p>As a secondary purpose, I needed a small project to try out nbdev for development :).</p>
 
 </div>
 </div>
@@ -44,7 +46,7 @@ nb_path: "index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><code>pip install your_project_name</code></p>
+<p><code>pip install roster2ical</code></p>
 
 </div>
 </div>
@@ -55,13 +57,6 @@ nb_path: "index.ipynb"
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Fill me in please! Don't forget code examples:</p>
-
-</div>
-</div>
-</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -69,26 +64,31 @@ nb_path: "index.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">roster2ical.roster</span> <span class="kn">import</span> <span class="n">ShiftProperties</span><span class="p">,</span> <span class="n">Roster</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+
+<span class="n">_abbr2shiftproperties</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;F1&quot;</span><span class="p">:</span> <span class="n">ShiftProperties</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Früh1&quot;</span><span class="p">,</span> <span class="n">starting_hour</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">8</span><span class="p">),</span> <span class="n">duration</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="p">),</span>
+    <span class="s2">&quot;N1&quot;</span><span class="p">:</span> <span class="n">ShiftProperties</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Nacht1&quot;</span><span class="p">,</span> <span class="n">starting_hour</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">22</span><span class="p">),</span> <span class="n">duration</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="p">),</span>
+<span class="p">}</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">Roster</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;Mo 01&quot;</span><span class="p">:</span> <span class="s2">&quot;F1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Di 02&quot;</span><span class="p">:</span> <span class="s2">&quot;N1&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">mapper</span><span class="o">=</span><span class="n">_abbr2shiftproperties</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">with</span> <span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span> <span class="o">/</span> <span class="s2">&quot;output&quot;</span> <span class="o">/</span> <span class="s2">&quot;example.ics&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">to_ics</span><span class="p">()))</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>2</pre>
-</div>
-
-</div>
-
 </div>
 </div>
 
