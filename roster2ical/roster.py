@@ -4,10 +4,11 @@ __all__ = ['ShiftProperties', 'Shift', 'Roster']
 
 # Cell
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date, time
 from ics import Calendar, Event
 import re
-from typing import Any, Optional
+from typing import Optional
+from zoneinfo import ZoneInfo
 
 
 @dataclass
@@ -49,6 +50,7 @@ class Roster:
                 year=cls._year,
                 month=cls._month,
                 day=int(cls._datep.search(date_str).group()),
+                tzinfo=ZoneInfo("Europe/Berlin"),
             )
             shift = Shift(props, date=date)
             shifts.append(shift)
