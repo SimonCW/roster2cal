@@ -33,7 +33,7 @@ class Roster:
     shifts: list[Shift]
     name: str = "Jane Doe"
     _year: int = 2022
-    _month: int = 1  # TODO: Read from Excel
+    _month: int = 2 # TODO: Read from Excel
     _dayp = re.compile(r"MO|DI|MI|DO|FR|SA|SO")
     _datep = re.compile(r"\d{2}")
 

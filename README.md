@@ -38,3 +38,9 @@ r = Roster.from_dict(
 with (Path.cwd() / "data" / "output" / "example.ics").open("w") as f:
     f.write(str(r.to_ics()))
 ```
+
+# ToDos
+- [ ] ics converts everything to UTC, this somehow messes up the times when editing imported dates into Google Cal https://github.com/ics-py/ics-py/issues/188
+- [ ] Add new shift types, e.g. RTH
+- [ ] Add secondary shift label, e.g. HG as "Hintergrund"
+- [ ] For private use, write module to push directly to Google Calendar (set color, etc)
