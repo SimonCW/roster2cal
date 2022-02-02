@@ -33,7 +33,7 @@ class Roster:
     shifts: list[Shift]
     name: str = "Jane Doe"
     _year: int = 2022
-    _month: int = 2 # TODO: Read from Excel
+    _month: int = 3 # TODO: Read from Excel
     _dayp = re.compile(r"MO|DI|MI|DO|FR|SA|SO")
     _datep = re.compile(r"\d{2}")
 
@@ -42,9 +42,17 @@ class Roster:
         cls, input: dict[str, str], mapper: Optional[dict] = None
     ) -> "Roster":
         shifts = []
+        # TODO: This whole continue stuff is just horrible. Change it future me!
         for date_str, abbr in input.items():
-            props = mapper[abbr]
-            if props is None:
+            if abbr == "(/)":
+                continue
+            try:
+                props = mapper[abbr]
+                if not props:
+                    print(f"No properties for shift abbrevation: {abbr}")
+                    continue
+            except KeyError:
+                print(f"Shift abbrevation not found in mapper: {abbr}")
                 continue
             date = datetime(
                 year=cls._year,
@@ -54,6 +62,8 @@ class Roster:
             )
             shift = Shift(props, date=date)
             shifts.append(shift)
+
+
         return cls(shifts=shifts)
 
     def to_ics(self):
